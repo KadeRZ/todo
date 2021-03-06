@@ -59,5 +59,3 @@ inputBox.onkeyup = ()=>{
     showTasks(); //call the showTasks function
   }
   // edit task function
-  
-  

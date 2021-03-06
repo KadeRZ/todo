@@ -18,7 +18,6 @@ document
   });
 print();
 
-
 function print() {
   // chats
   let chatsHtml = '';
@@ -56,6 +55,45 @@ function print() {
   document.getElementById('users').innerHTML = usersHtml;
 }
 
+function save() {
+  // save the chats object
+  localStorage.setItem('chats', JSON.stringify(chats));
+  // save the users object
+  localStorage.setItem('users', JSON.stringify(users));
+  // save the currentChat object
+  localStorage.setItem('currentChat', JSON.stringify(currentChat));
+}
+
+function retrieveChats() {
+  const retrieveChats = JSON.parse(localStorage.getItem('chats'));
+  if (retrieveChats) {
+    return Object.values(retrieveChats).map((chat) => createChat(chat));
+  }
+  return null;
+}
+
+function retrieveUsers() {
+  return JSON.parse(localStorage.getItem('users') || '[]');
+}
+
+function retrieveCurrentChat() {
+  const chat = JSON.parse(localStorage.getItem('currentChat'));
+  if (chat) {
+    return createChat(chat);
+  }
+
+  return null;
+}
+
+function createChat(chat) {
+  // take care of messages
+  const messages = chat.messages.map(
+    (message) =>
+      new Message(message.text, message.id, message.username, message.liked)
+  );
+  // return new instance of class
+  return new Chat(chat.name, chat.id, messages);
+}
 function addNewChat() {
   const chatName = document.getElementById('new-chat-input').value;
   if (chatName) {
